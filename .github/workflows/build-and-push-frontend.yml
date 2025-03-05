@@ -30,7 +30,7 @@ jobs:
         
       - name: Build Docker image for TestPrep Frontend
         run: |
-            docker build --build-arg API_URL=http://192.168.1.25:3001 -t ${{ secrets.DOCKERHUB_USERNAME }}/testprep_f:latest -f frontend/Dockerfile frontend/
+            docker build  -t ${{ secrets.DOCKERHUB_USERNAME }}/testprep_f:latest -f frontend/Dockerfile frontend/
 
     # Step 5: Push Docker Image
       - name: Push Docker image to Docker Hub

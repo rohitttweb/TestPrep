@@ -7,10 +7,6 @@ RUN npm install
 
 COPY . .
 
-# Pass environment variable
-ARG API_URL
-ENV API_URL=$API_URL
-
 RUN npm run build 
 
 
