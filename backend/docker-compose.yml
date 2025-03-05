@@ -12,7 +12,7 @@ services:
   backend-server:
     build: .  # Use your image name here
     ports:
-      - "3001:3001"  # Map container's 5000 to host's 9000
+      - "3001:3001"  # Map container's 3001 to host's 3001
     depends_on:
       - mongo
     env_file:
