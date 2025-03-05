@@ -1,4 +1,4 @@
-name: Build and Push Frontend Docker Image to Docker Hub
+name: Build and Push Backend Docker Image to Docker Hub
 
 on:
     push:
@@ -28,9 +28,9 @@ jobs:
             username: ${{ secrets.DOCKERHUB_USERNAME }}
             password: ${{ secrets.DOCKERHUB_TOKEN }}
         
-      - name: Build Docker image for TestPrep Frontend
+      - name: Build Docker image for TestPrep Backend
         run: |
-            docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/testprep_b:latest -f backend/Dockerfile .
+            docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/testprep_b:latest -f backend/Dockerfile backend/
 
     # Step 5: Push Docker Image
       - name: Push Docker image to Docker Hub

@@ -30,7 +30,7 @@ jobs:
         
       - name: Build Docker image for TestPrep Frontend
         run: |
-            docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/testprep_f:latest -f frontend/Dockerfile .
+            docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/testprep_f:latest -f frontend/Dockerfile frontend/
 
     # Step 5: Push Docker Image
       - name: Push Docker image to Docker Hub
