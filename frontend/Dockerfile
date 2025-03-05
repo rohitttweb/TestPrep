@@ -1,4 +1,4 @@
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
@@ -6,7 +6,7 @@ COPY package.json package-lock.json ./
 RUN npm install --omit=optional
 
 COPY . .
-RUN npm run build || cat /app/npm-debug.log
+RUN npm run build 
 
 
 FROM nginx:alpine
