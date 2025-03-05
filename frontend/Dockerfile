@@ -6,7 +6,8 @@ COPY package.json package-lock.json ./
 RUN npm install --omit=optional
 
 COPY . .
-RUN npm run build
+RUN npm run build || cat /app/npm-debug.log
+
 
 FROM nginx:alpine
 
