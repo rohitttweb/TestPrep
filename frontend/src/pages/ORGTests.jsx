@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const API_BASE_URL = process.env.API_URL; // Load from .env
+const API_BASE_URL = import.meta.env.VITE_API_URL // Load from .env
 
 const getUserToken = () => {
   return document.cookie

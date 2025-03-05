@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 
-const API_BASE_URL = process.env.API_URL; // Load from .env
+const API_BASE_URL = import.meta.env.VITE_API_URL // Load from .env
 
 const TopicsList = () => {
     const [topics, setTopics] = useState([]);

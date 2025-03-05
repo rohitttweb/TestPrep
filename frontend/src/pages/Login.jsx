@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"; // Import useAuth
 import { House } from "lucide-react";
 
-const API_BASE_URL = process.env.API_URL;
+const API_BASE_URL = import.meta.env.VITE_API_URL
 
 const Login = () => {
     const { setUser, user, loading } = useAuth(); // Make sure useAuth() provides setUser

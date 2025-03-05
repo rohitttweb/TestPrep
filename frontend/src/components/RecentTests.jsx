@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 
-const API_BASE_URL = process.env.API_URL; // Load API URL from .env
+const API_BASE_URL = import.meta.env.VITE_API_URL // Load API URL from .env
 
 
 const RecentTests = () => {

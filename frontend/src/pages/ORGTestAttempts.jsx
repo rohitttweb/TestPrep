@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-const API_BASE_URL = process.env.API_URL;
+const API_BASE_URL = import.meta.env.VITE_API_URL
 
 const getUserToken = () => {
   return document.cookie
