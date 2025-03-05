@@ -1,0 +1,26 @@
+version: '3'
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - mern-app
+
+  backend-server:
+    build: .  # Use your image name here
+    ports:
+      - "3001:3001"  # Map container's 5000 to host's 9000
+    depends_on:
+      - mongo
+    env_file:
+      - .env  # Load all environment variables from .env file
+    networks:
+      - mern-app
+volumes:
+  mongo_data:
+
+networks:
+  mern-app:

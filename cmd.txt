@@ -1,0 +1,13 @@
+mongodump --db onlinemocktestv1 --out C:\mongo_backup
+
+docker cp C:\mongo_backup backend-mongo-1:/data/db/mongo_backup
+
+docker exec -it backend-mongo-1 mongorestore --db onlinemocktestv1 /data/db/mongo_backup/onlinemocktestv1
+
+
+
+//////////////
+
+docker run --env-file .env -p 8080:80 testprep_f
+
+docker-compose up --build

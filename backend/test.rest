@@ -1,0 +1,25 @@
+### Fetch all main topics and their subtopics
+GET http://localhost:3001/api/topics
+Content-Type: application/json
+
+###
+GET http://localhost:3001/api/questions?Topic=aptitude&subTopic=Average&testlength=5
+Content-Type: application/json
+
+### Chatbot Test
+### Test API
+POST http://localhost:3001/api/chat
+Content-Type: application/json
+
+{
+    "messages": "Tell me a fun fact about space."
+}
+### login
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username": "testtt",
+    "password": "12345678"
+}
+
