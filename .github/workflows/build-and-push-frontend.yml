@@ -47,12 +47,7 @@ jobs:
 
       - name: Stop and remove existing container (if running)
         run: |
-            CONTAINER_ID=$(docker ps -q --filter "ancestor=${{ secrets.DOCKERHUB_USERNAME }}/testprep_f:latest")
-            if [ ! -z "$CONTAINER_ID" ]; then
-              echo "Stopping running container..."
-              docker stop $CONTAINER_ID
-              docker rm $CONTAINER_ID
-            fi
+            docker ps -q --filter "name=testprep_frontend" | xargs -r docker stop | xargs -r docker rm
 
       - name: Run Docker container
         run: |
