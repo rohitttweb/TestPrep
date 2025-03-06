@@ -4,7 +4,7 @@ on:
     workflow_dispatch:
 
 jobs:
-  build-and-push:
+  build-and-push-backend-to-docker:
     runs-on: ubuntu-20.04  # Specify a known Ubuntu version
 
     steps:
@@ -27,9 +27,24 @@ jobs:
         
       - name: Build Docker image for TestPrep Backend
         run: |
-            docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/testprep_b:latest -f backend/Dockerfile backend/
-
+          docker build \
+            --build-arg GROQ_API_KEY=${{ secrets.GROQ_API_KEY }} \
+            --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} \
+            --build-arg MONGO_URI=${{ secrets.MONGO_URI }} \
+            -t ${{ secrets.DOCKERHUB_USERNAME }}/testprep_b:latest \
+            -f backend/Dockerfile backend/
+    
     # Step 5: Push Docker Image
       - name: Push Docker image to Docker Hub
         run: |
             docker push ${{ secrets.DOCKERHUB_USERNAME }}/testprep_b:latest
+  deploy:
+    needs: build-and-push-backend-to-docker
+    runs-on: self-hosted
+    steps:
+      - name: Pull Docker image from Docker Hub
+        run: |
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/testprep_b:latest
+      - name: Run Docker container 
+        run: |
+            docker run -d -p 3001:3001 ${{ secrets.DOCKERHUB_USERNAME }}/testprep_b:latest
