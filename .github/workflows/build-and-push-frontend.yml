@@ -44,7 +44,17 @@ jobs:
       - name: Pull Docker image from Docker Hub
         run: |
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/testprep_f:latest
-      - name: Run Docker container 
+
+      - name: Stop and remove existing container (if running)
         run: |
-            docker run -d -p 8080:80 ${{ secrets.DOCKERHUB_USERNAME }}/testprep_f:latest
-        
+            CONTAINER_ID=$(docker ps -q --filter "ancestor=${{ secrets.DOCKERHUB_USERNAME }}/testprep_f:latest")
+            if [ ! -z "$CONTAINER_ID" ]; then
+              echo "Stopping running container..."
+              docker stop $CONTAINER_ID
+              docker rm $CONTAINER_ID
+            fi
+
+      - name: Run Docker container
+        run: |
+            docker run -d --name testprep_frontend -p 8080:80 ${{ secrets.DOCKERHUB_USERNAME }}/testprep_f:latest
+
