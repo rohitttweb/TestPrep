@@ -46,5 +46,5 @@ jobs:
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/testprep_f:latest
       - name: Run Docker container 
         run: |
-            docker run -d -p 80:80 ${{ secrets.DOCKERHUB_USERNAME }}/testprep_f:latest
+            docker run -d -p 8080:80 ${{ secrets.DOCKERHUB_USERNAME }}/testprep_f:latest
         
