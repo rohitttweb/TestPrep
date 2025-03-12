@@ -6,7 +6,8 @@ const Chatbot = () => {
     const [input, setInput] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const chatboxRef = useRef(null);
-    const API_BASE_URL = process.env.API_URL || "http://localhost:3001";
+    const API_BASE_URL = import.meta.env.VITE_API_URL // Load API URL from .env
+
 
     const formatText = (text) => {
         const boldRegex = /\*\*(.*?)\*\*/g;
