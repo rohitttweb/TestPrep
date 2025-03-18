@@ -5,7 +5,7 @@ on:
 
 jobs:
   build-and-push-backend-to-docker:
-    runs-on: ubuntu-20.04 # Specify a known Ubuntu version
+    runs-on: ubuntu-20.04 # Use a stable Ubuntu version
 
     steps:
       # Step 1: Checkout Code
@@ -25,6 +25,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      # Step 4: Build Docker Image
       - name: Build Docker image for TestPrep Backend
         run: |
           docker build \
@@ -32,13 +33,13 @@ jobs:
             --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} \
             --build-arg MONGO_URI=${{ secrets.MONGO_URI }} \
             -t ${{ secrets.DOCKERHUB_USERNAME }}/testprep_b:latest \
-            -f backend/Dockerfile backend/ \
-            --load
+            -f backend/Dockerfile backend/
 
       # Step 5: Push Docker Image
       - name: Push Docker image to Docker Hub
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/testprep_b:latest
+
   deploy:
     needs: build-and-push-backend-to-docker
     runs-on: self-hosted
@@ -49,7 +50,8 @@ jobs:
 
       - name: Stop and remove existing container (if running)
         run: |
-          docker ps -q --filter "name=testprep_backend" | xargs -r docker stop | xargs -r docker rm
+          docker stop testprep_backend || true
+          docker rm testprep_backend || true
 
       - name: Run Docker container
         run: |
