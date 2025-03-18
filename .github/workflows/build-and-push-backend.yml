@@ -10,13 +10,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Debug Secret Values
+        
+        # Step 2: Debug Docker environment
+      - name: Debug Docker environment
         run: |
-          echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}"
+          docker version
+          docker info
 
       - name: Login to Docker Hub
         uses: docker/login-action@v2
@@ -26,13 +25,7 @@ jobs:
 
       - name: Build Docker image for TestPrep Backend
         run: |
-          docker buildx build \
-            --build-arg GROQ_API_KEY=${{ secrets.GROQ_API_KEY }} \
-            --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} \
-            --build-arg MONGO_URI=${{ secrets.MONGO_URI }} \
-            -t ${{ secrets.DOCKERHUB_USERNAME }}/testprep_b:latest \
-            -f backend/Dockerfile backend/ \
-            --load
+          docker build --build-arg GROQ_API_KEY=${{ secrets.GROQ_API_KEY }} --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} --build-arg MONGO_URI=${{ secrets.MONGO_URI }} -t ${{ secrets.DOCKERHUB_USERNAME }}/testprep_b:latest -f backend/Dockerfile backend/ 
 
       - name: Push Docker image to Docker Hub
         run: |
