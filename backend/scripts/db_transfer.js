@@ -3,6 +3,12 @@
 import { createConnection } from 'mysql2/promise';
 import { Schema, model, connect, disconnect } from 'mongoose';
 
+import  dotenv  from 'dotenv';
+dotenv.config();
+
+const mongoUri = process.env.MONGO_URI;
+
+
 // Define the Question schema
 const questionSchema = new Schema({
     question: { type: String, required: true },
@@ -26,16 +32,13 @@ const Question = model('Question', questionSchema);
     });
 
     // MongoDB Connection
-    await connect('mongodb://localhost:27017/onlinemocktestv1', {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    });
+    await connect(mongoUri);
 
     console.log('Connected to SQL and MongoDB.');
 
     try {
         // Fetch data from SQL
-        const [rows] = await sqlConnection.query('SELECT * FROM verbal'); // Update with your SQL table name
+        const [rows] = await sqlConnection.query('SELECT * FROM aptitude'); // Update with your SQL table name
         console.log(`Fetched ${rows.length} records from SQL.`);
 
         // Transform and Insert into MongoDB
@@ -43,7 +46,7 @@ const Question = model('Question', questionSchema);
             question: row.question,
             options: [row.option1, row.option2, row.option3, row.option4],
             correct_ans: row.correct_ans,
-            maintopic: "verbal",
+            maintopic: "aptitude",
             subtopic: row.topic
         }));
 

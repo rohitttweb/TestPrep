@@ -11,3 +11,17 @@ docker exec -it backend-mongo-1 mongorestore --db onlinemocktestv1 /data/db/mong
 docker run --env-file .env -p 8080:80 testprep_f
 
 docker-compose up --build
+
+
+
+### EC2 setup
+
+sudo apt update && upgrade
+
+sudo apt install docker.io -y
+sudo chmod 666 /var/run/docker.sock
+
+//set up action runner 
+
+
+
