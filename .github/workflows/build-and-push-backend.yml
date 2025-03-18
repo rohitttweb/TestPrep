@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+
         # Step 2: Debug Docker environment
       - name: Debug Docker environment
         run: |
