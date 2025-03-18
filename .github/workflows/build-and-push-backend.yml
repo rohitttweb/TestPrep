@@ -8,37 +8,36 @@ jobs:
     runs-on: ubuntu-20.04 # Use a stable Ubuntu version
 
     steps:
-      # Step 1: Checkout Code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Debug Docker environment
-      - name: Debug Docker environment
-        run: |
-          docker version
-          docker info
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-      # Step 3: Log in to Docker Hub
+      - name: Debug Secret Values
+        run: |
+          echo "DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}"
+
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Step 4: Build Docker Image
       - name: Build Docker image for TestPrep Backend
         run: |
-          docker build \
+          docker buildx build \
             --build-arg GROQ_API_KEY=${{ secrets.GROQ_API_KEY }} \
             --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} \
             --build-arg MONGO_URI=${{ secrets.MONGO_URI }} \
             -t ${{ secrets.DOCKERHUB_USERNAME }}/testprep_b:latest \
-            -f backend/Dockerfile backend/
+            -f backend/Dockerfile backend/ \
+            --load
 
-      # Step 5: Push Docker Image
       - name: Push Docker image to Docker Hub
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/testprep_b:latest
+
 
   deploy:
     needs: build-and-push-backend-to-docker
