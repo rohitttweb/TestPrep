@@ -14,18 +14,22 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
-
-      - name: Inject Environment Variables
+          node-version: 20
+      - name: debug
         run: |
-          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > ./frontend/.env
-
+          echo "Node version: $(node -v)"
+          echo "NPM version: $(npm -v)"
+          echo "Current working directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
+          echo ${{ secrets.VITE_API_URL }}
+          
       - name: Install dependencies
         run: npm install
         working-directory: ./frontend
 
       - name: Build React frontend
-        run: npm run build
+        run: VITE_API_URL=${{ secrets.VITE_API_URL }} npm run build
         working-directory: ./frontend
 
       - name: Deploy to S3
