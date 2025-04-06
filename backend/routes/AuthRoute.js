@@ -14,6 +14,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(cookieParser()); 
 
 const secret = process.env.JWT_SECRET
+
 // Register route with role support
 router.post('/register', async (req, res) => {
     try {
@@ -70,7 +71,6 @@ router.post('/login', async (req, res) => {
         res.status(500).send('Internal server error');
     }
 });
-
 
 // Check if username exists
 router.post('/isexist', async (req, res) => {

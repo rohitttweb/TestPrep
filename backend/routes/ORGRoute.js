@@ -5,10 +5,10 @@ import authMiddleware from "../middleware/authMiddleware.js";
 
 import ORGTestAttemptsModel from "../models/ORGTestAttemptsModel.js"
 
+// Attempt a ORG test
 router.post("/attempt", authMiddleware, async (req, res) => {
   try {
     const { testId, answers, submittedEvent } = req.body;
-
     // Fetch test details to get questions and correct answers
     const test = await ORGTestsModel.findById(testId);
     if (!test) {
@@ -23,13 +23,7 @@ router.post("/attempt", authMiddleware, async (req, res) => {
       const userAnswer = answers[question._id] || "";
       const isCorrect = userAnswer === question.correctAnswer;
       if (isCorrect) score++;
-
-      return {
-        question: question.question,
-        options: question.options,
-        userselected: userAnswer,
-        correctAnswer: question.correctAnswer,
-      };
+      return { question: question.question, options: question.options, userselected: userAnswer, correctAnswer: question.correctAnswer};
     });
 
     // Store attempt in database
@@ -43,17 +37,14 @@ router.post("/attempt", authMiddleware, async (req, res) => {
     });
 
     await newAttempt.save();
+    res.status(201).json({ message: "Test attempt saved successfully!", score, totalScore});
 
-    res.status(201).json({
-      message: "Test attempt saved successfully!",
-      score,
-      totalScore,
-    });
   } catch (error) {
     console.error("Error saving attempt:", error);
     res.status(500).json({ error: "Server error" });
   }
 });
+
 // Check if the user has already attempted the test
 router.get("/attempts/:testId", authMiddleware, async (req, res) => {
   try {
@@ -94,7 +85,7 @@ router.post("/test/create", authMiddleware, async (req, res) => {
   }
 });
 
-
+// Fetch a single test
 router.get("/test/:id", async (req, res) => {
   try {
     const test = await ORGTestsModel.findById(req.params.id);
@@ -110,7 +101,7 @@ router.get("/test/:id", async (req, res) => {
 });
 
 
-
+// List all tests created by the org user
 router.get("/tests", authMiddleware, async (req, res) => {
   try {
     const tests = await ORGTestsModel.find({ createdBy: req.user._id });
@@ -121,7 +112,7 @@ router.get("/tests", authMiddleware, async (req, res) => {
 });
 
 
-
+// Fetch all attempts for a test
 router.get("/test/:testId/attempts", authMiddleware, async (req, res) => {
   try {
     const { testId } = req.params;

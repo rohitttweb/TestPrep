@@ -1,5 +1,4 @@
 // Script to transfer Sql table to mongodb
-
 import { createConnection } from 'mysql2/promise';
 import { Schema, model, connect, disconnect } from 'mongoose';
 
@@ -7,7 +6,6 @@ import  dotenv  from 'dotenv';
 dotenv.config();
 
 const mongoUri = process.env.MONGO_URI;
-
 
 // Define the Question schema
 const questionSchema = new Schema({
@@ -30,7 +28,6 @@ const Question = model('Question', questionSchema);
         password: '', // Update with your SQL password
         database: 'onlinemocktestv1' // Update with your SQL database name
     });
-
     // MongoDB Connection
     await connect(mongoUri);
 

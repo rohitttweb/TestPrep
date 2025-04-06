@@ -4,13 +4,7 @@ import Question from '../models/Questions.js'; // Assuming the model is in a fol
 // Function to add data to MongoDB
 const addDataToMongo = async (question, options, correct_ans, maintopic, subtopic) => {
     try {
-        const newQuestion = new Question({
-            question,
-            options,
-            correct_ans,
-            maintopic,
-            subtopic
-        });
+        const newQuestion = new Question({question, options, correct_ans, maintopic, subtopic});
         await newQuestion.save();
     } catch (error) {
         throw new Error(`Error adding data: ${error.message}`);
@@ -42,17 +36,12 @@ router.get('/questions', async (req, res) => {
     const testTopic = req.query.Topic;
     const testSubTopic = req.query.subTopic;
     const testLength = Number(req.query.testlength);
-
     if (!testLength) {
         return res.status(400).json({ error: 'Invalid test length' });
     }
-
     try {
         const questions = await getQuestions(testTopic, testSubTopic, testLength);
-        res.json({
-            code: 200,
-            success: 'Data fetched successfully',
-            data: questions
+        res.json({ code: 200, success: 'Data fetched successfully', data: questions
         });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -66,7 +55,6 @@ router.post('/add', async (req, res) => {
     if (!question || !options || options.length !== 4 || !correct_ans || !mainTopic || !subTopic) {
         return res.status(400).json({ error: 'Invalid data provided' });
     }
-
     try {
         await addDataToMongo(question, options, correct_ans, mainTopic, subTopic);
         res.status(200).json({ status: 'success' });
@@ -78,22 +66,9 @@ router.post('/add', async (req, res) => {
 router.get('/topics', async (req, res) => {
     try {
         const topics = await Question.aggregate([
-            {
-                $group: {
-                    _id: "$maintopic",
-                    subTopics: { $addToSet: "$subtopic" },
-                },
-            },
-            {
-                $project: {
-                    _id: 0,
-                    mainTopic: "$_id",
-                    subTopics: 1,
-                },
-            },
+            {$group: { _id: "$maintopic", subTopics: { $addToSet: "$subtopic" }}},
+            {$project: { _id: 0, mainTopic: "$_id", subTopics: 1}},
         ]);
-     
-
         res.status(200).json(topics);
     } catch (error) {
         console.error("Error fetching topics:", error);

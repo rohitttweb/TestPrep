@@ -12,6 +12,7 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate()
+    
     useEffect(() => {
         if (!loading && user) {
             console.log("Navigating after user is set:", user);
@@ -21,10 +22,8 @@ const Login = () => {
         }
     }, [user, loading, navigate]);
 
-
-
-
     if (loading) return <div>Loading...</div>;
+
     const handleLogin = async (e) => {
         e.preventDefault();
         setErrorMessage("");
@@ -49,7 +48,6 @@ const Login = () => {
                     Date.now() + 86400000 * 7
                 ).toUTCString()}; path=/`;
 
-
                 // ✅ Ensure setUser is fully processed before navigation
                 setUser(result.user);
                 setuserlogin(true)
@@ -58,9 +56,6 @@ const Login = () => {
                 const redirectPath = localStorage.getItem("redirectAfterLogin") || "/dashboard";
                 localStorage.removeItem("redirectAfterLogin");
                 window.location.href = redirectPath;
-
-
-
             } else {
                 setErrorMessage(result.message || "Invalid credentials.");
             }
