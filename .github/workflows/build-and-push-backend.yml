@@ -5,7 +5,7 @@ on:
 
 jobs:
   build-and-push-backend-to-docker:
-    runs-on: ubuntu-20.04 # Use a stable Ubuntu version
+    runs-on: ubuntu-20.04 
 
     steps:
       #Step 1 Checkout Code in repo

@@ -5,6 +5,7 @@ node_modules/
 dist/  # Vite build folder
 build/ # Other frontend build folders
 backend/dist/ # transpile backend (e.g., TypeScript)
+keys/ # keys folder 
 
 # Logs and debugging
 logs/

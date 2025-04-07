@@ -26,4 +26,12 @@ sudo chmod 666 /var/run/docker.sock
 //Run latest workflows 
 
 
+////////////
+#cloud fromation
+aws cloudformation create-stack --stack-name testprep-backend-stack --template-body file://ec2-nginx.yml --parameters ParameterKey=KeyName,ParameterValue=tf_test
 
+aws cloudformation describe-stacks --stack-name testprep-backend-stack --query "Stacks[0].Outputs"
+
+aws cloudformation delete-stack --stack-name testprep-backend-stack
+
+aws cloudformation describe-stacks --stack-name testprep-backend-stack --query "Stacks[0].StackStatus"
