@@ -10,8 +10,8 @@ pipeline {
         stage('Setup') {
             steps {
                 script {
-                    
-
+                    // Install Node.js and npm
+                    // This is a workaround for the Jenkins agent not having Node.js installed
                     sh """
                        apt-get update && apt-get install -y nodejs npm
                        ln -s /usr/bin/nodejs /usr/bin/node  
