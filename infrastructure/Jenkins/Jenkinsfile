@@ -7,18 +7,7 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Setup') {
-            steps {
-                script {
-                    // Install Node.js and npm
-                    // This is a workaround for the Jenkins agent not having Node.js installed
-                    sh """
-                       sudo apt-get update && apt-get install -y nodejs npm
-                       npm install -g npm@latest 
-                    """
-                }
-            }
-        }
+       
         stage('Install') {
             steps {
                 sh 'npm install'
