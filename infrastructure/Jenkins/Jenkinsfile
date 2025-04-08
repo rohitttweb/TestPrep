@@ -10,19 +10,12 @@ pipeline {
         stage('Setup') {
             steps {
                 script {
-                    def nodeVersion = '20.19.0'
-                    def npmVersion = '10.8.2'
-                    def nvmDir = "${env.WORKSPACE}/.nvm"
+                    
 
                     sh """
-                        mkdir -p ${nvmDir}
-                        export NVM_DIR=${nvmDir}
-                        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
-                        source ${nvmDir}/nvm.sh
-                        nvm install ${nodeVersion}
-                        nvm use ${nodeVersion}
-                        nvm alias default ${nodeVersion}
-                        npm install -g npm@${npmVersion}
+                       apt-get update && apt-get install -y nodejs npm
+                       ln -s /usr/bin/nodejs /usr/bin/node  
+                       npm install -g npm@latest 
                     """
                 }
             }
