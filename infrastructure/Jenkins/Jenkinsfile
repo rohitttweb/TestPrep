@@ -13,7 +13,7 @@ pipeline {
                     // Install Node.js and npm
                     // This is a workaround for the Jenkins agent not having Node.js installed
                     sh """
-                       apt-get update && apt-get install -y nodejs npm
+                       sudo apt-get update && apt-get install -y nodejs npm
                        ln -s /usr/bin/nodejs /usr/bin/node  
                        npm install -g npm@latest 
                     """
