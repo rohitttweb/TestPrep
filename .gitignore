@@ -37,7 +37,12 @@ Thumbs.db
 tmp/
 temp/
 
+keys
+infrastructure/terraform/*
+!infrastructure/terraform/main.tf
 
+infrastructure/localstack/*
+!infrastructure/localstack/docker-compose.yml   
 # secre
 Secret.txt
 
