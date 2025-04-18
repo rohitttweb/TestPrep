@@ -38,5 +38,16 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
+          BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}
+          REGION=ap-south-1 # Change to your desired region
+
+          # Check if the bucket exists
+          if ! aws s3api head-bucket --bucket "$BUCKET_NAME" 2>/dev/null; then
+            echo "Bucket does not exist. Creating $BUCKET_NAME..."
+            aws s3api create-bucket --bucket "$BUCKET_NAME" --region "$REGION" \
+              --create-bucket-configuration LocationConstraint="$REGION"
+          else
+            echo "Bucket $BUCKET_NAME already exists."
+          fi 
           aws s3 sync ./frontend/dist s3://${{ secrets.S3_BUCKET_NAME }} --delete
           aws s3 website s3://${{ secrets.S3_BUCKET_NAME }}/ --index-document index.html --error-document index.html

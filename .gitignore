@@ -43,6 +43,7 @@ infrastructure/terraform/*
 
 infrastructure/localstack/*
 !infrastructure/localstack/docker-compose.yml   
+
 # secre
 Secret.txt
 
