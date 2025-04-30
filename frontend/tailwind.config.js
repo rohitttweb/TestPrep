@@ -9,15 +9,12 @@ export default {
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: [
-      "light",
-    "dark",
-    "lofi",
-    
-    "winter",
-    "dim",
-    "nord",
+    themes : [
+      "winter",
+      "light ",
+      "lofi",
+      "dim",
+      "nord",
     ],
-    
   },
 };

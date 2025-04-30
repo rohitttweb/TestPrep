@@ -45,9 +45,8 @@ const App = () => {
 const MainRoutes = () => {
   const { user } = useAuth();
 
-  const location = useLocation(); // Get the current route
+  const location = useLocation(); 
 
-  // Define routes where the chatbot should be displayed
   const showChatbot = ["/dashboard", "/testpage"].includes(location.pathname);
 
   return (

@@ -15,15 +15,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
-      - name: debug
-        run: |
-          echo "Node version: $(node -v)"
-          echo "NPM version: $(npm -v)"
-          echo "Current working directory: $(pwd)"
-          echo "Directory contents:"
-          ls -la
-          echo ${{ secrets.VITE_API_URL }}
-          
+    
       - name: Install dependencies
         run: npm install
         working-directory: ./frontend
@@ -50,4 +42,4 @@ jobs:
             echo "Bucket $BUCKET_NAME already exists."
           fi 
           aws s3 sync ./frontend/dist s3://${{ secrets.S3_BUCKET_NAME }} --delete
-          aws s3 website s3://${{ secrets.S3_BUCKET_NAME }}/ --index-document index.html --error-document index.html
+          aws s3 website s3://${{ secrets.S3_BUCKET_NAME }}/ --index-document index.html --error-document error.html

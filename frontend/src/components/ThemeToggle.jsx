@@ -3,16 +3,14 @@ import React, { useEffect, useState } from "react";
 export default function ThemeToggle() {
   const themes = [
     "light",
-    "dark",
     "lofi",
-    
     "winter",
     "dim",
     "nord",
  
   ];
   const [selectedTheme, setSelectedTheme] = useState(() => {
-    return localStorage.getItem("theme") || "default"; // Load saved theme, default to "default"
+    return localStorage.getItem("theme") || "deafult"; // Load saved theme, default to "default"
   });
 
   useEffect(() => {

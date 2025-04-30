@@ -46,5 +46,5 @@ infrastructure/localstack/*
 
 # secre
 Secret.txt
-
+api.txt
 !.env.production

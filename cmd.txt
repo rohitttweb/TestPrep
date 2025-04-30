@@ -1,9 +1,9 @@
+// export data from mongodb and cope it to docker container if using mogodb on docker-compose
 mongodump --db onlinemocktestv1 --out C:\mongo_backup
 
 docker cp C:\mongo_backup backend-mongo-1:/data/db/mongo_backup
 
 docker exec -it backend-mongo-1 mongorestore --db onlinemocktestv1 /data/db/mongo_backup/onlinemocktestv1
-
 
 
 //////////////
@@ -14,7 +14,7 @@ docker-compose up --build
 
 
 
-### EC2 setup
+### EC2 setup (for self runner)
 
 sudo apt update && upgrade
 
@@ -28,7 +28,7 @@ sudo chmod 666 /var/run/docker.sock
 
 ////////////
 #cloud fromation
-aws cloudformation create-stack --stack-name testprep-backend-stack --template-body file://ec2-nginx.yml --parameters ParameterKey=KeyName,ParameterValue=tf_test
+aws cloudformation create-stack --stack-name testprep-backend-stack --template-body file://testprep-b-stack.yml --parameters ParameterKey=KeyName,ParameterValue=tf_test
 
 aws cloudformation describe-stacks --stack-name testprep-backend-stack --query "Stacks[0].Outputs"
 

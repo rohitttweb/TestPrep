@@ -41,7 +41,7 @@ const HomePage = () => {
             <section id="about" className="py-12 px-8 bg-base-100">
                 <div className="container mx-auto text-center">
                     <h2 className="text-3xl font-bold mb-6">About Us</h2>
-                    <div className="card bg-base-100 p-6 max-w-xl mx-auto shadow-lg">
+                    <div className="card bg-base-100 p-6 max-w-xl mx-auto">
                         <p className="leading-relaxed">
                             TestPrep is a platform designed to help students excel in their exams.
                             With personalized practice tests, detailed analytics, and expert guidance,
