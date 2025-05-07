@@ -42,4 +42,4 @@ jobs:
             echo "Bucket $BUCKET_NAME already exists."
           fi 
           aws s3 sync ./frontend/dist s3://${{ secrets.S3_BUCKET_NAME }} --delete
-          aws s3 website s3://${{ secrets.S3_BUCKET_NAME }}/ --index-document index.html --error-document error.html
+          aws s3 website s3://${{ secrets.S3_BUCKET_NAME }}/ --index-document index.html --error-document index.html
