@@ -5,7 +5,7 @@ on:
 
 jobs:
   build-and-push-frontend-to-docker:
-    runs-on: ubuntu-20.04  # Specify a known Ubuntu version
+    runs-on: ubuntu-latest
 
     steps:
       # Step 1: Checkout Code
