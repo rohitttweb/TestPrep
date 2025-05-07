@@ -111,7 +111,6 @@ const TestPage = () => {
     }
     const handleSubmit = async (eventType) => {
         setSubmitted(true);
-        console.log(eventType)
         let totalScore = 0, correct = 0, wrong = 0;
 
         const formattedQuestions = questions.map((question, index) => {
@@ -157,7 +156,6 @@ const TestPage = () => {
                 },
             });
 
-            console.log("Test submitted successfully:", response.data);
 
         } catch (error) {
             console.error("Error submitting test:", error.response?.data || error.message);

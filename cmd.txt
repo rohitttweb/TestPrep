@@ -35,3 +35,22 @@ aws cloudformation describe-stacks --stack-name testprep-backend-stack --query "
 aws cloudformation delete-stack --stack-name testprep-backend-stack
 
 aws cloudformation describe-stacks --stack-name testprep-backend-stack --query "Stacks[0].StackStatus"
+
+
+///
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": [
+                "s3:GetObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::testprep-f*"
+            ]
+        }
+    ]
+}

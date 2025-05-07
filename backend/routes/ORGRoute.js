@@ -92,7 +92,6 @@ router.get("/test/:id", async (req, res) => {
     if (!test) {
       return res.status(404).json({ error: "Test not found" });
     }
-    console.log(test)
     res.json(test);
   } catch (error) {
     console.error("Error fetching test:", error);
@@ -138,6 +137,28 @@ router.get("/test/:testId/attempts", authMiddleware, async (req, res) => {
     res.status(500).json({ error: "Internal server error." });
   }
 });
+
+
+router.get('/:orgId/profile', async (req, res) => {
+  const { orgId } = req.params;
+
+  try {
+    const totalTests = await ORGTestsModel.countDocuments({ createdBy: orgId });
+    const testId = await ORGTestsModel.find({ createdBy: orgId }).distinct('_id');
+    const totalAttempts = await ORGTestAttemptsModel.countDocuments({ testId });  
+
+    res.json({
+      orgId,
+      totalTests,
+      totalAttempts
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch org profile stats' });
+  }
+});
+
+
 
 
 export default router;

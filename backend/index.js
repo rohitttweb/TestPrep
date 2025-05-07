@@ -37,6 +37,11 @@ app.use('/api/usertests', TestResultRoute);
 import ORGRoute from './routes/ORGRoute.js'
 app.use('/api/org', ORGRoute);
 
+
+import statsRoutes  from './routes/stats.js';
+app.use('/api/server', statsRoutes);
+
+
 app.get('/', (req, res) => {
     res.send('Hello World!')
 })

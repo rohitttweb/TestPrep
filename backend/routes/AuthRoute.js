@@ -19,7 +19,6 @@ const secret = process.env.JWT_SECRET
 router.post('/register', async (req, res) => {
     try {
         const { name, username, password, role } = req.body;
-        console.log(req.body)
 
         if (username.length < 5) return res.status(400).send("Username must be at least 5 characters long");
         if (password.length < 8) return res.status(400).send("Password must be at least 8 characters long");
@@ -104,7 +103,6 @@ router.get('/validate-token', (req, res) => {
                 return res.status(404).json({ success: false, message: 'User not found' });
             }
             // Token is valid, user found
-            console.log("kjbhvgvjbknklm")
             const fetchedUser = {
                 id : user._id,
                 name : user.name,

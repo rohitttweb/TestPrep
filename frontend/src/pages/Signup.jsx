@@ -41,7 +41,6 @@ const SignUp = () => {
         }
 
         const userData = { name, username, password, role }; // Include role in request
-        console.log(userData)
         fetch(`${API_BASE_URL}/api/Auth/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },

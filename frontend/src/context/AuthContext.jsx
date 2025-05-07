@@ -35,7 +35,6 @@ export const AuthProvider = ({ children }) => {
 
         const data = await response.json();
         if (data.success) {
-          console.log("Authenticated User:", data.user);
           setUser({
             id: data.user.id,
             name: data.user.name,

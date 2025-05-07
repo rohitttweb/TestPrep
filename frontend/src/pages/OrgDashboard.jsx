@@ -6,12 +6,12 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import CreateTest from "../components/CreateTest";
 import ORGTests from "./ORGTests";
+import OrgProfile from "./OrgProfile";
 
 const OrgDashboard = () => {
     const { user, loading } = useAuth();
     const [activePage, setActivePage] = useState("orgProfile");
     const navigate = useNavigate();
-
     useEffect(() => {
         if (!loading && user) {
             navigate("/dashboard");
@@ -44,7 +44,8 @@ const OrgDashboard = () => {
                         <div>
                             {activePage === "ORGTests" && <ORGTests />}
                             {activePage === "createTest" && <CreateTest />}
-                            {/* {activePage === "orgProfile" && <OrgProfile />} */}
+                            {activePage === "orgProfile" && <OrgProfile orgId={user.id} />}
+
                         </div>
 
                         <div className="mt-4 text-lg font-semibold text-center text-secondary">

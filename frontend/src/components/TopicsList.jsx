@@ -13,7 +13,6 @@ const TopicsList = () => {
             try {
                 const response = await fetch(`${API_BASE_URL}/api/usertests/topics`);
                 const data = await response.json();
-                console.log(data);
                 setTopics(data);
                 if (data.length > 0) {
                     setActiveTopic(data[0].mainTopic); // Default to first topic

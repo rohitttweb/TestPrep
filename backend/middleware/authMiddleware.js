@@ -10,7 +10,6 @@ const authenticateToken = async (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify token
-        console.log("Decoded User:", decoded); // Debugging output
 
         req.user = await User.findById(decoded.id).select("-password"); // Attach user to request
 

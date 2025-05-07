@@ -1,13 +1,12 @@
 import express from 'express';
 
 const router = express.Router();
-import User from "../models/User.js"; // Assuming you have a User model
-import authenticateToken from "../middleware/authMiddleware.js"; // Middleware to verify JWT
+import User from "../models/User.js"; 
+import authenticateToken from "../middleware/authMiddleware.js"; 
 
 // Get user data
 router.get("/profile", authenticateToken, async (req, res) => {
     try {
-        console.log("Authenticated User ID:", req.user._id); // Debugging output
 
         const user = await User.findById(req.user._id).select("-password"); // Exclude password
         if (!user) return res.status(404).json({ message: "User not found" });

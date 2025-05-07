@@ -17,4 +17,10 @@ export default {
       "nord",
     ],
   },
+  extend: {
+    scrollBehavior: {
+      smooth: 'smooth',
+    }
+  }
 };
+

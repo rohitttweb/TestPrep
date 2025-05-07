@@ -12,7 +12,6 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 router.post('/chat', async (req, res) => {
     try {
         const { messages } = req.body;
-        console.log(messages)
         if (!Array.isArray(messages) || messages.length === 0) {
             return res.status(400).json({ error: "Invalid 'messages' format. Must be a non-empty array." });
         }

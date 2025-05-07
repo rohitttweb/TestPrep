@@ -15,6 +15,7 @@ import NotFound from "./pages/NotFound";
 import OrgDashboard from "./pages/OrgDashboard";
 import OrgTestPage from "./pages/OrgTestPage";
 import OrgTestAttempts from "./pages/ORGTestAttempts";
+import AboutPage from "./pages/aboutpage";
 
 const ProtectedRoute = ({ element }) => {
   const { user } = useAuth();
@@ -47,7 +48,7 @@ const MainRoutes = () => {
 
   const location = useLocation(); 
 
-  const showChatbot = ["/dashboard", "/testpage"].includes(location.pathname);
+  const showChatbot = ["/dashboard", "/testpage", "/"].includes(location.pathname);
 
   return (
     <>
@@ -55,6 +56,7 @@ const MainRoutes = () => {
         <Route path="/" element={<Homepage />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/about" element={<AboutPage />} />
         
         {/* Protected Routes */}
         <Route

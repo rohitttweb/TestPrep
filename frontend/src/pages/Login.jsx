@@ -15,7 +15,6 @@ const Login = () => {
     
     useEffect(() => {
         if (!loading && user) {
-            console.log("Navigating after user is set:", user);
             const redirectPath = localStorage.getItem("redirectAfterLogin") || "/dashboard";
             localStorage.removeItem("redirectAfterLogin");
             navigate(redirectPath);
@@ -41,17 +40,14 @@ const Login = () => {
             });
 
             const result = await response.json();
-            console.log("Login Response:", result);
 
             if (result.success) {
                 document.cookie = `UserToken=${result.token}; expires=${new Date(
                     Date.now() + 86400000 * 7
                 ).toUTCString()}; path=/`;
 
-                // ✅ Ensure setUser is fully processed before navigation
                 setUser(result.user);
                 setuserlogin(true)
-                console.log("User set in AuthContext:", result.user);
 
                 const redirectPath = localStorage.getItem("redirectAfterLogin") || "/dashboard";
                 localStorage.removeItem("redirectAfterLogin");
