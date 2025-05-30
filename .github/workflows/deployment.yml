@@ -121,3 +121,11 @@ jobs:
         run: |
             BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}
             aws s3 website s3://$BUCKET_NAME/ --index-document index.html --error-document index.html
+            
+      - name: Output Website URL
+        run: |
+            REGION=${{ secrets.AWS_REGION }}
+            BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}
+            WEBSITE_URL="http://${BUCKET_NAME}.s3-website-${REGION}.amazonaws.com"
+
+            echo "Static website is available at: $WEBSITE_URL"
