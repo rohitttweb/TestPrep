@@ -1,0 +1,123 @@
+name: Deploy CloudFormation Stack and Frontend
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-backend:
+    runs-on: ubuntu-latest
+    outputs:
+      ec2_ip: ${{ steps.get_ip.outputs.ec2_ip }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Deploy CloudFormation Stack
+        run: |
+          aws cloudformation create-stack \
+            --stack-name testprep-backend-stack \
+            --template-body file://infrastructure/testprep-b-stack \
+            --parameters ParameterKey=KeyName,ParameterValue=testprep-key
+
+          echo "Waiting for stack creation to complete..."
+
+          aws cloudformation wait stack-create-complete \
+            --stack-name testprep-backend-stack
+
+      - name: Get EC2 Public IP from Stack Outputs
+        id: get_ip
+        run: |
+          EC2_IP=$(aws cloudformation describe-stacks \
+            --stack-name testprep-backend-stack \
+            --query "Stacks[0].Outputs[?OutputKey=='InstancePublicIp'].OutputValue" \
+            --output text)
+          echo "EC2 IP: $EC2_IP"
+          echo "ec2_ip=$EC2_IP" >> $GITHUB_OUTPUT
+
+  deploy-frontend-to-s3:
+    needs: deploy-backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./frontend
+
+      - name: Build React frontend
+        run: |
+          echo "Building frontend with API URL: http://${{ needs.deploy-backend.outputs.ec2_ip }}"
+          VITE_API_URL=http://${{ needs.deploy-backend.outputs.ec2_ip }} npm run build
+        working-directory: ./frontend
+    
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Create S3 Bucket if Not Exists
+        run: |
+          BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}
+          REGION=${{ secrets.AWS_REGION }}
+
+          if ! aws s3api head-bucket --bucket "$BUCKET_NAME" 2>/dev/null; then
+            echo "Bucket does not exist. Creating $BUCKET_NAME..."
+            aws s3api create-bucket --bucket "$BUCKET_NAME" --region "$REGION" \
+              --create-bucket-configuration LocationConstraint="$REGION"
+          else
+            echo "Bucket $BUCKET_NAME already exists."
+          fi
+
+      - name: Disable Public Access Block (if enabled)
+        run: |
+          BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}
+          aws s3api delete-public-access-block --bucket "$BUCKET_NAME" || echo "No public access block to delete."
+
+      - name: Set Bucket Policy for Public Read
+        run: |
+            BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}
+
+            POLICY=$(cat <<EOF
+            {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                "Sid": "PublicReadGetObject",
+                "Effect": "Allow",
+                "Principal": "*",
+                "Action": "s3:GetObject",
+                "Resource": "arn:aws:s3:::$BUCKET_NAME/*"
+                }
+            ]
+            }
+            EOF
+            )
+            echo "$POLICY" > policy.json
+            aws s3api put-bucket-policy --bucket "$BUCKET_NAME" --policy file://policy.json
+
+      - name: Deploy to S3
+        run: |
+            BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}
+            aws s3 sync ./frontend/dist s3://$BUCKET_NAME --delete
+
+      - name: Enable S3 Static Website Hosting
+        run: |
+            BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}
+            aws s3 website s3://$BUCKET_NAME/ --index-document index.html --error-document index.html
