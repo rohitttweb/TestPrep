@@ -1,0 +1,35 @@
+name: Delete Backend Stack and Frontend Bucket
+
+on:
+  workflow_dispatch:
+
+jobs:
+  delete-resources:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Delete S3 Bucket Contents
+        run: |
+          BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}
+          echo "Deleting all objects from bucket: $BUCKET_NAME"
+          aws s3 rm s3://$BUCKET_NAME --recursive || echo "Bucket may not exist."
+
+      - name: Delete S3 Bucket
+        run: |
+          BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}
+          echo "Deleting bucket: $BUCKET_NAME"
+          aws s3api delete-bucket --bucket $BUCKET_NAME || echo "Bucket may already be deleted."
+
+      - name: Delete CloudFormation Stack
+        run: |
+          echo "Deleting CloudFormation stack: testprep-backend-stack"
+          aws cloudformation delete-stack --stack-name testprep-backend-stack
+          echo "Waiting for stack deletion to complete..."
+          aws cloudformation wait stack-delete-complete --stack-name testprep-backend-stack || echo "Stack already deleted or doesn't exist."

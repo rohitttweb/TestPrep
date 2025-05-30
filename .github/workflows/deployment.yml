@@ -1,4 +1,4 @@
-name: main deployment
+name: Main Deployment
 
 on:
   workflow_dispatch:
