@@ -37,7 +37,7 @@ jobs:
         run: |
           EC2_IP=$(aws cloudformation describe-stacks \
             --stack-name testprep-backend-stack \
-            --query "Stacks[0].Outputs[?OutputKey=='InstancePublicIp'].OutputValue" \
+            --query "Stacks[0].Outputs[?OutputKey=='InstancePublicIP'].OutputValue" \
             --output text)
           echo "EC2 IP: $EC2_IP"
           echo "ec2_ip=$EC2_IP" >> $GITHUB_OUTPUT
