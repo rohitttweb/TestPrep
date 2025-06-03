@@ -51,6 +51,7 @@ const MainRoutes = () => {
 
   return (
     <>
+    <div className="max-w-[2560px] mx-auto ">
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/signup" element={<SignUp />} />
@@ -73,7 +74,8 @@ const MainRoutes = () => {
 
       {/* Only show chatbot on dashboard and testpage */}
       {showChatbot && <Chatbot />}
-
+      
+</div>
 
     </>
   );

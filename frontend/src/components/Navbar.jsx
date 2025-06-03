@@ -8,7 +8,7 @@ const Navbar = () => {
   const { name, role, id } = user || {};
 
   return (
-    <div className="navbar bg-base-100 sticky top-0 z-40">
+    <div className="navbar bg-base-100 sticky top-0 z-40 ">
       <div className="navbar-start">
       <div className="dropdown z-50">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
