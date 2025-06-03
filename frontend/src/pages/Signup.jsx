@@ -123,7 +123,7 @@ const SignUp = () => {
                             onChange={(e) => setRole(e.target.value)}
                             className="w-full px-4 py-2 mt-2 border rounded-md focus:ring-2 focus:ring-blue-500"
                         >
-                            <option value="user">Regular User</option>
+                            <option value="user">User</option>
                             <option value="org">Organization</option>
                         </select>
                     </div>

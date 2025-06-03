@@ -1,3 +1,4 @@
+import { House } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -74,7 +75,11 @@ export default function TestAttempts() {
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
-
+      <div className="absolute top-5 left-5">
+                <a href="/dashboard" className="text-gray-600 hover:text-black">
+                    <House />
+                </a>
+            </div>
       <h2 className="text-xl font-semibold mb-4">Test Attempts</h2>
       <h1 className="text-sm font-bold mb-2">{`${testTitle.slice(0, 100)}  .....`}</h1>
 

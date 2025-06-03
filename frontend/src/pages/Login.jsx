@@ -62,14 +62,14 @@ const Login = () => {
     };
 
     return (
-        <div className="flex justify-center items-center h-screen bg-gray-100">
+        <div className="flex justify-center items-center h-screen bg-white-100">
             <div className="absolute top-5 left-5">
                 <a href="/" className="text-gray-600 hover:text-black">
                     <House />
                 </a>
             </div>
 
-            <div className="w-96 p-6 bg-white shadow-lg rounded-lg">
+            <div className="w-96 p-6 bg-white rounded-lg">
                 <div className="text-center mb-6">
                     <a href="/">
                         <img src="logo.png" alt="Logo" className="w-20 mx-auto" />
